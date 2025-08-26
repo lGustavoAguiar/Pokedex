@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
-import pokemonIcon from '../public/pokemon-icon.png';
-import pokedexBackground from '../public/41763e61-7cc5-4c28-a7d8-1c912ad5eb49.png';
+import pokemonIcon from '/pokemon-icon.png';
+import pokedexBackground from '/41763e61-7cc5-4c28-a7d8-1c912ad5eb49.png';
 import './App.css'
 import HomePage from './pages/HomePage'
 import PokemonDetail from './pages/PokemonDetail'
