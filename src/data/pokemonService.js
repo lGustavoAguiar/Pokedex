@@ -48,6 +48,13 @@ class PokemonService {
             .filter(type => !['unknown', 'shadow'].includes(type))
             .sort();
     }
+
+    static async getPokemonSpecies(speciesUrl) {
+        const response = await fetch(speciesUrl);
+        if (!response.ok) throw new Error('Failed to fetch pokemon species');
+        const data = await response.json();
+        return data;
+    }
 }
 
 export default PokemonService;

@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import './PokemonCard.css';
 
 const PokemonCard = ({ pokemon, animationDelay = 0 }) => {
+  const navigate = useNavigate();
   const getTypeColor = (type) => {
     const typeColors = {
       normal: '#A8A878',
@@ -29,6 +31,10 @@ const PokemonCard = ({ pokemon, animationDelay = 0 }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const handleCardClick = () => {
+    navigate(`/pokemon/${pokemon.id}`);
+  };
+
   return (
     <div 
       className="pokemon-card" 
@@ -36,6 +42,7 @@ const PokemonCard = ({ pokemon, animationDelay = 0 }) => {
         animationDelay: `${animationDelay}s`,
         animation: 'cardSlideIn 0.6s ease-out forwards'
       }}
+      onClick={handleCardClick}
     >
       <div className="pokemon-image">
         <img 

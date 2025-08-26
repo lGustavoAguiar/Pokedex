@@ -104,3 +104,50 @@ export const getPokemonTypes = async () => {
     throw error;
   }
 };
+
+export const getPokemonDetails = async (pokemonId) => {
+  try {
+    const pokemonData = await PokemonService.getPokemon(pokemonId);
+    const speciesData = await PokemonService.getPokemonSpecies(pokemonData.species.url);
+    
+    return {
+      id: pokemonData.id,
+      name: pokemonData.name,
+      height: pokemonData.height,
+      weight: pokemonData.weight,
+      types: pokemonData.types.map(type => type.type.name),
+      abilities: pokemonData.abilities.map(ability => ({
+        name: ability.ability.name,
+        isHidden: ability.is_hidden
+      })),
+      stats: pokemonData.stats.map(stat => ({
+        name: stat.stat.name,
+        baseStat: stat.base_stat,
+        effort: stat.effort
+      })),
+      image: pokemonData.sprites.other['official-artwork']?.front_default || 
+             pokemonData.sprites.front_default ||
+             `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonData.id}.png`,
+      sprites: {
+        front_default: pokemonData.sprites.front_default,
+        front_shiny: pokemonData.sprites.front_shiny,
+        back_default: pokemonData.sprites.back_default,
+        back_shiny: pokemonData.sprites.back_shiny,
+        official_artwork: pokemonData.sprites.other['official-artwork']?.front_default
+      },
+      description: speciesData.flavor_text_entries
+        .find(entry => entry.language.name === 'en')?.flavor_text
+        .replace(/\f/g, ' ') || 'Descrição não disponível',
+      genus: speciesData.genera
+        .find(genus => genus.language.name === 'en')?.genus || 'Pokémon',
+      baseExperience: pokemonData.base_experience,
+      captureRate: speciesData.capture_rate,
+      growthRate: speciesData.growth_rate.name,
+      habitat: speciesData.habitat?.name || 'Desconhecido',
+      generation: speciesData.generation.name
+    };
+  } catch (error) {
+    console.error('Error fetching Pokemon details:', error);
+    throw error;
+  }
+};
