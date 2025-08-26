@@ -85,6 +85,10 @@ const HomePage = () => {
           <p>
             Resultados para "<strong>{searchQuery}</strong>": {totalCount} Pokémon(s) encontrado(s)
           </p>
+        ) : selectedType ? (
+          <p>
+            Tipo "<strong>{selectedType.charAt(0).toUpperCase() + selectedType.slice(1)}</strong>": {totalCount} Pokémon(s) • Página {currentPage} de {totalPages}
+          </p>
         ) : (
           <p>
             Mostrando 1302 pokémons • Página {currentPage} de {totalPages}
