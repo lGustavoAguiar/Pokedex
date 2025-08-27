@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SearchBar from '../components/SearchBar'
 import PokemonGrid from '../components/PokemonGrid'
 import Pagination from '../components/Pagination'
@@ -6,6 +7,7 @@ import TypeFilterBar from '../components/TypeFilterBar';
 import { getPokemonByPage, searchPokemon, getPokemonByType } from '../data/pokemonApi'
 
 const HomePage = () => {
+  const navigate = useNavigate()
   const [pokemon, setPokemon] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -75,9 +77,23 @@ const HomePage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleQuizNavigation = () => {
+    navigate('/quiz')
+  }
+
   return (
     <main className="app-main">
       <SearchBar onSearch={handleSearch} value={searchQuery} />
+      
+      <div className="quiz-button-container">
+        <button 
+          className="quiz-button" 
+          onClick={handleQuizNavigation}
+        >
+          🎯 Quiz Pokémon - Quem é esse Pokémon?
+        </button>
+      </div>
+
       <TypeFilterBar onTypeSelect={handleTypeSelect} selectedType={selectedType} />
       
       <div className="results-info">
