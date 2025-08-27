@@ -4,6 +4,8 @@
   gap: 8px;
   margin-bottom: 24px;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .type-btn {

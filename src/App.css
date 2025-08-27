@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   background: transparent;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Poppins', 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
 }
 
 .app-header {
@@ -37,15 +37,16 @@
 }
 
 .app-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Space Grotesk', 'Orbitron', sans-serif;
   font-size: 3.8rem;
-  font-weight: 900;
+  font-weight: 800;
   text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #000000 !important;
   animation: titleGlow 3s ease-in-out infinite alternate;
   cursor: default;
+  font-feature-settings: 'ss01', 'ss02';
 }
 
 @keyframes titleGlow {
@@ -63,11 +64,11 @@
 }
 
 .app-subtitle {
-  font-family: 'Exo 2', sans-serif;
+  font-family: 'Poppins', 'Inter', sans-serif;
   font-size: 1.3rem;
   opacity: 0.95;
-  font-weight: 400;
-  letter-spacing: 1px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.4);
   margin-top: 8px;
   color: #000000 !important;
@@ -84,15 +85,16 @@
 }
 
 .results-info {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Inter', 'Poppins', sans-serif;
   text-align: center;
   margin-bottom: 20px;
   color: white;
   font-size: 16px;
   opacity: 0.95;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: default;
 }
 
 .results-info strong {

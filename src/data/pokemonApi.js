@@ -48,6 +48,7 @@ export const searchPokemon = async (query, page = 1) => {
   const searchQuery = query.trim().toLowerCase();
   
   try {
+    // Primeiro, tenta buscar o Pokémon exato
     const pokemonData = await PokemonService.getPokemon(searchQuery);
     const formattedPokemon = formatPokemonData(pokemonData);
     
@@ -58,13 +59,67 @@ export const searchPokemon = async (query, page = 1) => {
       totalCount: 1
     };
   } catch (error) {
+    // Se não encontrar exato, busca por Pokémons que começam com o termo
+    try {
+      if (!pokemonSuggestionsCache) {
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
+        const data = await response.json();
+        pokemonSuggestionsCache = data.results.map((pokemon, index) => ({
+          id: index + 1,
+          name: pokemon.name,
+          url: pokemon.url
+        }));
+      }
 
-    return {
-      pokemon: [],
-      totalPages: 0,
-      currentPage: 1,
-      totalCount: 0
-    };
+      // Filtrar pokémons que começam com o termo de busca
+      const matchingPokemons = pokemonSuggestionsCache
+        .filter(pokemon => 
+          pokemon.name.toLowerCase().startsWith(searchQuery) ||
+          pokemon.id.toString().includes(searchQuery)
+        )
+        .slice((page - 1) * POKEMON_PER_PAGE, page * POKEMON_PER_PAGE);
+
+      if (matchingPokemons.length === 0) {
+        return {
+          pokemon: [],
+          totalPages: 0,
+          currentPage: 1,
+          totalCount: 0
+        };
+      }
+
+      // Buscar detalhes completos dos pokémons encontrados
+      const pokemonPromises = matchingPokemons.map(async (pokemon) => {
+        const pokemonData = await PokemonService.getPokemon(pokemon.name);
+        return pokemonData;
+      });
+      
+      const pokemonDetails = await Promise.all(pokemonPromises);
+      const formattedPokemon = pokemonDetails.map(formatPokemonData);
+
+      // Calcular total de resultados para paginação
+      const totalMatching = pokemonSuggestionsCache.filter(pokemon => 
+        pokemon.name.toLowerCase().startsWith(searchQuery) ||
+        pokemon.id.toString().includes(searchQuery)
+      ).length;
+
+      const totalPages = Math.ceil(totalMatching / POKEMON_PER_PAGE);
+
+      return {
+        pokemon: formattedPokemon,
+        totalPages,
+        currentPage: page,
+        totalCount: totalMatching
+      };
+    } catch (searchError) {
+      console.error('Error in fallback search:', searchError);
+      return {
+        pokemon: [],
+        totalPages: 0,
+        currentPage: 1,
+        totalCount: 0
+      };
+    }
   }
 };
 
@@ -102,6 +157,48 @@ export const getPokemonTypes = async () => {
   } catch (error) {
     console.error('Error fetching Pokemon types:', error);
     throw error;
+  }
+};
+
+// Cache para sugestões de Pokémon
+let pokemonSuggestionsCache = null;
+
+export const getPokemonSuggestions = async (query) => {
+  if (!query || query.trim().length < 2) {
+    return [];
+  }
+
+  const searchQuery = query.trim().toLowerCase();
+  
+  try {
+    // Se não temos cache, buscar lista básica de pokémons
+    if (!pokemonSuggestionsCache) {
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000');
+      const data = await response.json();
+      pokemonSuggestionsCache = data.results.map((pokemon, index) => ({
+        id: index + 1,
+        name: pokemon.name,
+        url: pokemon.url
+      }));
+    }
+
+    // Filtrar pokémons que correspondem à busca
+    const filteredPokemons = pokemonSuggestionsCache
+      .filter(pokemon => 
+        pokemon.name.toLowerCase().includes(searchQuery) ||
+        pokemon.id.toString().includes(searchQuery)
+      )
+      .slice(0, 8); // Limitar a 8 sugestões
+
+    return filteredPokemons.map(pokemon => ({
+      id: pokemon.id,
+      name: pokemon.name,
+      displayName: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
+      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`
+    }));
+  } catch (error) {
+    console.error('Error fetching Pokemon suggestions:', error);
+    return [];
   }
 };
 
