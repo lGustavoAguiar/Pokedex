@@ -1,18 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap');
+
 .quiz-page {
   min-height: 100vh;
-  height: 100vh;
   background: 
-    linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  font-family: 'Inter', 'Poppins', sans-serif;
+    linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%),
+    url('/pokemon-icon.png');
+  background-size: 400% 400%, 60px 60px;
+  background-position: 0% 50%, 0 0;
+  background-repeat: no-repeat, repeat;
+  animation: gradientShift 20s ease infinite;
+  font-family: 'Inter', 'Poppins', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 15px;
+  align-items: flex-start;
+  padding: 10px;
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .quiz-page::before {
@@ -22,11 +26,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-  animation: particlesFloat 20s ease-in-out infinite;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+  opacity: 0.8;
   pointer-events: none;
   z-index: 0;
 }
@@ -53,41 +56,36 @@
 }
 
 .quiz-container {
-  max-width: 100%;
+  max-width: 900px;
   width: 100%;
-  max-height: 100vh;
-  height: fit-content;
+  margin: 10px auto;
   background: 
-    linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-  border-radius: 25px;
-  padding: 25px;
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%);
+  border-radius: 24px;
+  padding: 32px;
   box-shadow: 
-    0 30px 80px rgba(0, 0, 0, 0.15),
-    0 15px 40px rgba(0, 0, 0, 0.1),
-    inset 0 2px 0 rgba(255, 255, 255, 1),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+    0 25px 50px rgba(0, 0, 0, 0.08),
+    0 15px 35px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-  animation: containerFloat 6s ease-in-out infinite;
   display: flex;
   flex-direction: column;
+  min-height: fit-content;
 }
 
 .quiz-container::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #dda0dd);
-  background-size: 300% 300%;
-  border-radius: 27px;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  border-radius: 25px;
   z-index: -1;
-  animation: borderGlow 8s ease infinite;
+  opacity: 0.1;
 }
 
 @keyframes containerFloat {
@@ -104,10 +102,11 @@
 
 .quiz-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative;
   animation: headerSlideIn 1s ease-out;
   flex-shrink: 0;
+  padding: 0 10px;
 }
 
 @keyframes headerSlideIn {
@@ -121,6 +120,28 @@
   }
 }
 
+@keyframes welcomeSlideIn {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.9); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes listItemSlideIn {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-20px) scale(0.95); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0) scale(1); 
+  }
+}
+
 .back-button {
   position: absolute;
   left: 0;
@@ -128,17 +149,17 @@
   background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   box-shadow: 
-    0 8px 25px rgba(108, 92, 231, 0.3),
-    0 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
+    0 4px 15px rgba(108, 92, 231, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  z-index: 10;
 }
 
 .back-button::before {
@@ -169,27 +190,42 @@
 }
 
 .quiz-title {
-  font-size: clamp(1.8rem, 5vw, 3.2rem);
-  font-weight: 900;
-  background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #ffeaa7 100%);
-  background-size: 200% 200%;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3b82f6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 10px 0;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  animation: titleRainbow 4s ease-in-out infinite, titleBounce 2s ease-in-out infinite;
-  letter-spacing: clamp(1px, 0.5vw, 2px);
+  margin: 0 0 8px 0;
+  letter-spacing: clamp(0.5px, 0.3vw, 1.5px);
   position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
 }
 
-.quiz-title::after {
-  content: '✨';
-  position: absolute;
-  top: -10px;
-  right: -20px;
-  font-size: 1.5rem;
-  animation: sparkle 2s ease-in-out infinite;
+.pokeball-icon {
+  display: inline-block;
+  width: clamp(32px, 5vw, 44px);
+  height: clamp(32px, 5vw, 44px);
+  background: url('/pokemon-icon.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.95;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+  animation: pokeball-spin 10s linear infinite;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+@keyframes pokeball-spin {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg); }
+  75% { transform: rotate(270deg) scale(1.1); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes titleRainbow {
@@ -209,15 +245,15 @@
 }
 
 .quiz-subtitle {
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  background: linear-gradient(135deg, #636e72 0%, #2d3436 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: 'Nunito', 'Inter', sans-serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+  color: #475569;
   margin: 0;
   font-weight: 600;
-  animation: subtitleFade 3s ease-in-out infinite;
-  letter-spacing: clamp(0.5px, 0.2vw, 1px);
+  letter-spacing: clamp(0.5px, 0.2vw, 0.8px);
+  text-align: center;
+  opacity: 0.85;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes subtitleFade {
@@ -230,50 +266,68 @@
   padding: 40px 20px;
 }
 
-.start-info h2 {
-  font-size: 1.8rem;
-  color: #2d3436;
+.game-start h2 {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: #1e293b;
   margin-bottom: 20px;
   font-weight: 700;
+  letter-spacing: 0.5px;
+  animation: welcomeSlideIn 1s ease-out 0.2s both;
 }
 
-.start-info p {
-  font-size: 1.1rem;
-  color: #636e72;
+.game-start p {
+  font-family: 'Nunito', 'Inter', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: #475569;
   margin-bottom: 25px;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 500;
+  animation: welcomeSlideIn 1s ease-out 0.4s both;
 }
 
-.start-info ul {
+.game-start ul {
   list-style: none;
   padding: 0;
   margin: 25px 0;
   text-align: left;
   display: inline-block;
+  animation: welcomeSlideIn 1s ease-out 0.6s both;
 }
 
-.start-info li {
-  font-size: 1rem;
-  color: #2d3436;
-  margin: 10px 0;
-  padding: 8px 0;
-  font-weight: 500;
+.game-start li {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  color: #334155;
+  margin: 12px 0;
+  padding: 10px 0;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  animation: listItemSlideIn 0.8s ease-out both;
 }
+
+.game-start li:nth-child(1) { animation-delay: 0.7s; }
+.game-start li:nth-child(2) { animation-delay: 0.8s; }
+.game-start li:nth-child(3) { animation-delay: 0.9s; }
 
 .start-button {
-  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  padding: 18px 40px;
-  border-radius: 50px;
-  font-size: 1.2rem;
-  font-weight: 600;
+  padding: 20px 45px;
+  border-radius: 16px;
+  font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 20px;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  text-transform: none;
+  letter-spacing: 0.8px;
+  margin-top: 25px;
+  position: relative;
+  overflow: hidden;
+  animation: welcomeSlideIn 1s ease-out 0.8s both;
 }
 
 .start-button:hover {
@@ -285,8 +339,8 @@
 .quiz-stats {
   display: flex;
   justify-content: center;
-  gap: clamp(15px, 4vw, 25px);
-  margin-bottom: 20px;
+  gap: clamp(10px, 3vw, 20px);
+  margin-bottom: 15px;
   flex-wrap: wrap;
   animation: statsSlideIn 1.2s ease-out 0.3s both;
   flex-shrink: 0;
@@ -304,19 +358,19 @@
 }
 
 .stat {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
-  padding: clamp(12px, 3vw, 20px) clamp(15px, 4vw, 30px);
-  border-radius: 20px;
+  padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3.5vw, 24px);
+  border-radius: 12px;
   text-align: center;
   box-shadow: 
-    0 8px 25px rgba(116, 185, 255, 0.4),
-    0 4px 15px rgba(0, 0, 0, 0.1);
-  min-width: clamp(100px, 20vw, 140px);
+    0 4px 20px rgba(59, 130, 246, 0.25),
+    0 2px 10px rgba(0, 0, 0, 0.1);
+  min-width: clamp(90px, 18vw, 120px);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: statFloat 4s ease-in-out infinite;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat:nth-child(1) { animation-delay: 0s; }
@@ -351,17 +405,21 @@
 }
 
 .stat-label {
+  font-family: 'Inter', sans-serif;
   display: block;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-size: clamp(0.7rem, 1.8vw, 0.85rem);
   font-weight: 500;
   opacity: 0.9;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
 }
 
 .stat-value {
+  font-family: 'Poppins', 'Inter', sans-serif;
   display: block;
-  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
   font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 .quiz-loading {
@@ -395,21 +453,21 @@
 }
 
 .pokemon-display {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   position: relative;
 }
 
 .mystery-text {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   animation: mysteryGlow 2s ease-in-out infinite, mysteryBounce 3s ease-in-out infinite;
   background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff3742, #fd79a8);
   background-size: 200% 200%;
-  padding: 18px 35px;
-  border-radius: 50px;
+  padding: 12px 24px;
+  border-radius: 30px;
   display: inline-block;
   box-shadow: 
-    0 12px 35px rgba(255, 107, 107, 0.5),
-    0 6px 20px rgba(0, 0, 0, 0.1);
+    0 8px 25px rgba(255, 107, 107, 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -427,13 +485,13 @@
 
 .mystery-text h3 {
   color: #ffffff;
-  font-size: 1.6rem;
-  font-weight: 800;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 700;
   margin: 0;
   text-shadow: 
-    2px 2px 8px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(255, 255, 255, 0.3);
-  letter-spacing: 2px;
+    2px 2px 6px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(255, 255, 255, 0.2);
+  letter-spacing: 1px;
   text-transform: uppercase;
   position: relative;
   z-index: 1;
@@ -480,17 +538,17 @@
 }
 
 .pokemon-image {
-  width: clamp(150px, 35vw, 250px);
-  height: clamp(150px, 35vw, 250px);
+  width: clamp(120px, 30vw, 200px);
+  height: clamp(120px, 30vw, 200px);
   object-fit: contain;
   margin: 0 auto;
   display: block;
-  border-radius: 20px;
+  border-radius: 15px;
   background: 
     radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(248, 249, 250, 0.6) 100%);
-  padding: clamp(15px, 4vw, 25px);
+  padding: clamp(10px, 3vw, 20px);
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.15),
+    0 10px 30px rgba(0, 0, 0, 0.12),
     0 8px 25px rgba(116, 185, 255, 0.2),
     inset 0 2px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -584,8 +642,8 @@
 .options-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(12px, 3vw, 20px);
-  margin-bottom: 20px;
+  gap: clamp(8px, 2vw, 15px);
+  margin-bottom: 15px;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -605,24 +663,23 @@
 }
 
 .option-button {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border: 3px solid #e9ecef;
-  padding: clamp(12px, 3vw, 22px) clamp(16px, 4vw, 28px);
-  border-radius: 20px;
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid #e2e8f0;
+  padding: clamp(16px, 3vw, 24px) clamp(20px, 4vw, 32px);
+  border-radius: 16px;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #2d3436;
+  transition: all 0.3s ease;
+  color: #334155;
   box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.08),
-    0 4px 15px rgba(0, 0, 0, 0.05);
+    0 4px 20px rgba(0, 0, 0, 0.06),
+    0 2px 10px rgba(0, 0, 0, 0.04);
   position: relative;
   overflow: hidden;
   text-transform: capitalize;
   letter-spacing: clamp(0.2px, 0.1vw, 0.5px);
-  animation: optionFloat 3s ease-in-out infinite;
-  min-height: clamp(50px, 10vw, 70px);
+  min-height: clamp(60px, 12vw, 80px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -650,18 +707,18 @@
 }
 
 .option-button:hover:not(:disabled) {
-  transform: translateY(-5px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.15),
-    0 8px 25px rgba(116, 185, 255, 0.2);
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-color: #74b9ff;
+    0 8px 30px rgba(0, 0, 0, 0.12),
+    0 4px 15px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-color: #3b82f6;
 }
 
 .option-button.selected {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
-  border-color: #0984e3;
+  border-color: #1d4ed8;
   box-shadow: 
     0 12px 35px rgba(116, 185, 255, 0.4),
     0 6px 20px rgba(0, 0, 0, 0.1);
@@ -670,22 +727,22 @@
 }
 
 .option-button.correct {
-  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  border-color: #00b894;
+  border-color: #059669;
   box-shadow: 
-    0 12px 35px rgba(0, 184, 148, 0.4),
-    0 6px 20px rgba(0, 0, 0, 0.1);
+    0 8px 25px rgba(16, 185, 129, 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.1);
   animation: correctBounce 0.6s ease-out;
 }
 
 .option-button.incorrect {
-  background: linear-gradient(135deg, #e17055 0%, #fd79a8 100%);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
-  border-color: #e17055;
+  border-color: #dc2626;
   box-shadow: 
-    0 12px 35px rgba(225, 112, 85, 0.4),
-    0 6px 20px rgba(0, 0, 0, 0.1);
+    0 8px 25px rgba(239, 68, 68, 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.1);
   animation: incorrectShake 0.6s ease-out;
 }
 
@@ -729,6 +786,15 @@
   gap: 25px;
   flex-wrap: wrap;
   animation: actionsSlideIn 1s ease-out 0.8s both;
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 @keyframes actionsSlideIn {
@@ -743,22 +809,22 @@
 }
 
 .next-button {
-  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  padding: 18px 36px;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   box-shadow: 
-    0 8px 25px rgba(0, 184, 148, 0.4),
-    0 4px 15px rgba(0, 0, 0, 0.1);
+    0 4px 15px rgba(16, 185, 129, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: 0.3px;
 }
 
 .next-button::before {
@@ -776,31 +842,30 @@
 }
 
 .next-button:hover {
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-2px);
   box-shadow: 
-    0 15px 40px rgba(0, 184, 148, 0.5),
-    0 8px 25px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #00a085 0%, #00b8b3 100%);
-  padding-left: 45px;
+    0 6px 20px rgba(16, 185, 129, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
 }
 
 .restart-button {
-  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: white;
   border: none;
-  padding: 18px 36px;
-  border-radius: 30px;
-  font-size: 1.2rem;
-  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   box-shadow: 
-    0 8px 25px rgba(108, 92, 231, 0.4),
-    0 4px 15px rgba(0, 0, 0, 0.1);
+    0 4px 15px rgba(99, 102, 241, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: 0.3px;
 }
 
 .restart-button::before {
@@ -818,23 +883,23 @@
 }
 
 .restart-button:hover {
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-2px);
   box-shadow: 
-    0 15px 40px rgba(108, 92, 231, 0.5),
-    0 8px 25px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #5f4fcf 0%, #9085e8 100%);
-  padding-right: 45px;
+    0 6px 20px rgba(99, 102, 241, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
   .quiz-page {
-    padding: 10px;
+    padding: 8px;
+    background-size: 300% 300%, 40px 40px;
   }
-
+  
   .quiz-container {
     padding: 20px;
-    margin: 0;
+    margin: 5px auto;
     border-radius: 20px;
     max-height: 95vh;
   }

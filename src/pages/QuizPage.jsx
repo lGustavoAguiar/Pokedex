@@ -209,6 +209,17 @@ const QuizPage = () => {
     }
     
     setQuestionsAnswered(questionsAnswered + 1)
+
+    // Scroll automático para mostrar os botões de ação após responder
+    setTimeout(() => {
+      const actionsElement = document.querySelector('.quiz-actions')
+      if (actionsElement) {
+        actionsElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        })
+      }
+    }, 500) // Aguarda um pouco para a animação da resposta aparecer
   }
 
   // Avança para a próxima pergunta
@@ -228,7 +239,10 @@ const QuizPage = () => {
           <button className="back-button" onClick={goHome}>
             ← Voltar ao Pokédex
           </button>
-          <h1 className="quiz-title">🎯 Quiz Pokémon</h1>
+          <h1 className="quiz-title">
+            <span className="pokeball-icon"></span>
+            Quiz Pokémon
+          </h1>
           <p className="quiz-subtitle">Quem é esse Pokémon?</p>
         </div>
 
