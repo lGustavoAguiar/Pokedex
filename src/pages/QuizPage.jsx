@@ -66,6 +66,19 @@ const formatPokemonData = (pokemonData) => {
   };
 };
 
+// Definição das gerações Pokémon
+const POKEMON_GENERATIONS = {
+  1: { name: 'Kanto (Gen I)', range: [1, 151], emoji: '🔴' },
+  2: { name: 'Johto (Gen II)', range: [152, 251], emoji: '🟡' },
+  3: { name: 'Hoenn (Gen III)', range: [252, 386], emoji: '🟢' },
+  4: { name: 'Sinnoh (Gen IV)', range: [387, 493], emoji: '🔵' },
+  5: { name: 'Unova (Gen V)', range: [494, 649], emoji: '⚫' },
+  6: { name: 'Kalos (Gen VI)', range: [650, 721], emoji: '🟣' },
+  7: { name: 'Alola (Gen VII)', range: [722, 809], emoji: '🟠' },
+  8: { name: 'Galar (Gen VIII)', range: [810, 905], emoji: '⚪' },
+  9: { name: 'Paldea (Gen IX)', range: [906, 1010], emoji: '🔶' }
+}
+
 const QuizPage = () => {
   const navigate = useNavigate()
   const [currentPokemon, setCurrentPokemon] = useState(null)
@@ -79,10 +92,23 @@ const QuizPage = () => {
   const [loading, setLoading] = useState(true)
   const [gameStarted, setGameStarted] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const [selectedGeneration, setSelectedGeneration] = useState('all')
+  const [showGenerationSelect, setShowGenerationSelect] = useState(false)
 
-  // Gera um número aleatório entre 1 e 1010 (pokémons mais estáveis)
-  // Evita os últimos IDs que podem ter problemas na API
-  const getRandomPokemonId = () => Math.floor(Math.random() * 1010) + 1
+  // Gera um número aleatório baseado na geração selecionada
+  const getRandomPokemonId = () => {
+    if (selectedGeneration === 'all') {
+      return Math.floor(Math.random() * 1010) + 1
+    }
+    
+    const generation = POKEMON_GENERATIONS[selectedGeneration]
+    if (generation) {
+      const [min, max] = generation.range
+      return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+    
+    return Math.floor(Math.random() * 1010) + 1
+  }
 
   // Formata o nome do Pokémon para exibição
   const formatPokemonName = (name) => {
@@ -178,10 +204,12 @@ const QuizPage = () => {
   }
 
   // Inicia o jogo
-  const startGame = () => {
+  const startGame = (generation = 'all') => {
+    setSelectedGeneration(generation)
     setGameStarted(true)
     setScore(0)
     setQuestionsAnswered(0)
+    setShowGenerationSelect(false)
     loadNewQuestion()
   }
 
@@ -194,6 +222,8 @@ const QuizPage = () => {
     setOptions([])
     setSelectedAnswer(null)
     setShowResult(false)
+    setShowGenerationSelect(false)
+    setSelectedGeneration('all')
   }
 
   // Lida com a seleção de uma resposta
@@ -248,21 +278,63 @@ const QuizPage = () => {
 
         {!gameStarted ? (
           <div className="game-start">
-            <div className="start-info">
-              <h2>Bem-vindo ao Quiz Pokémon!</h2>
-              <p>
-                Teste seus conhecimentos sobre Pokémon! Você verá uma silhueta ou imagem 
-                de um Pokémon e terá que escolher o nome correto entre 4 opções.
-              </p>
-              <ul>
-                <li>🎮 Pokémons aleatórios dos 1302 disponíveis</li>
-                <li>🏆 Acompanhe sua pontuação</li>
-                <li>⚡ Desafie-se e divirta-se!</li>
-              </ul>
-            </div>
-            <button className="start-button" onClick={startGame}>
-              Começar Quiz
-            </button>
+            {!showGenerationSelect ? (
+              <>
+                <div className="start-info">
+                  <h2>Bem-vindo ao Quiz Pokémon!</h2>
+                  <p>
+                    Teste seus conhecimentos sobre Pokémon! Você verá uma silhueta ou imagem 
+                    de um Pokémon e terá que escolher o nome correto entre 4 opções.
+                  </p>
+                  <ul>
+                    <li>🎮 Pokémons de diferentes gerações</li>
+                    <li>🏆 Acompanhe sua pontuação</li>
+                    <li>⚡ Desafie-se e divirta-se!</li>
+                  </ul>
+                </div>
+                <button 
+                  className="start-button" 
+                  onClick={() => setShowGenerationSelect(true)}
+                >
+                  Escolher Geração
+                </button>
+              </>
+            ) : (
+              <div className="generation-selection">
+                <h2>Escolha uma Geração</h2>
+                <p>Selecione qual geração de Pokémon você quer no seu quiz:</p>
+                
+                <div className="generation-grid">
+                  <button 
+                    className="generation-button all-generations"
+                    onClick={() => startGame('all')}
+                  >
+                    <span className="generation-emoji">🌟</span>
+                    <span className="generation-name">Todas as Gerações</span>
+                    <span className="generation-count">1-1010</span>
+                  </button>
+                  
+                  {Object.entries(POKEMON_GENERATIONS).map(([gen, data]) => (
+                    <button 
+                      key={gen}
+                      className="generation-button"
+                      onClick={() => startGame(gen)}
+                    >
+                      <span className="generation-emoji">{data.emoji}</span>
+                      <span className="generation-name">{data.name}</span>
+                      <span className="generation-count">{data.range[0]}-{data.range[1]}</span>
+                    </button>
+                  ))}
+                </div>
+                
+                <button 
+                  className="back-to-start-button"
+                  onClick={() => setShowGenerationSelect(false)}
+                >
+                  ← Voltar
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
